@@ -24,9 +24,21 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.dataSource = self
         tableView.delegate = self
         
+        
+        // Initialize a UIRefreshControl
+        let refreshControl = UIRefreshControl()
+
+        update()
+        
+        refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
+        tableView.insertSubview(refreshControl, at: 0)
+    }
+    
+    func update() {
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")!
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
+        
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         
         MBProgressHUD.showAdded(to: self.view, animated: true)
@@ -41,10 +53,21 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                     
                     self.movies = (dataDictionary["results"] as! [NSDictionary])
                     self.tableView.reloadData()
+                    
                 }
             }
         }
         task.resume()
+        
+    }
+    
+    // Makes a network request to get updated data
+    // Updates the tableView with the new data
+    // Hides the RefreshControl
+    func refreshControlAction(_ refreshControl: UIRefreshControl) {
+        update();
+        // Tell the refreshControl to stop spinning
+        refreshControl.endRefreshing()
     }
 
     override func didReceiveMemoryWarning() {
@@ -80,6 +103,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         print("row\(indexPath.row)")
         return cell
     }
+
     /*
     // MARK: - Navigation
 
