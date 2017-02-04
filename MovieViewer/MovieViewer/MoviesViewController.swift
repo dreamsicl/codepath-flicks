@@ -19,21 +19,22 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
-        
+        // Set tableView parameters to self
         tableView.dataSource = self
         tableView.delegate = self
-        
-        
-        // Initialize a UIRefreshControl
-        let refreshControl = UIRefreshControl()
 
+        // Call the API to have data on first load
         update()
         
+        // Initialize a UIRefreshControl for pull-to-refresh
+        let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
         tableView.insertSubview(refreshControl, at: 0)
     }
     
+    // Makes call to API for movie data
+    // Sets loading state while data is being fetched
+    // Reloads table data if request is successful
     func update() {
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")!
@@ -69,12 +70,12 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         // Tell the refreshControl to stop spinning
         refreshControl.endRefreshing()
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
     
+    /*
+    // MARK: - Table View
+    */
+    
+    // Sets the number of rows in the table to be the number of movies returned from API call
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let movies = movies {
             return movies.count
@@ -83,6 +84,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             return 0
         }
     }
+
+    // Populates table cell with individual movie data returned from API call
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as! MovieCell
         
@@ -102,6 +105,11 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
         print("row\(indexPath.row)")
         return cell
+    }
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
     }
 
     /*
