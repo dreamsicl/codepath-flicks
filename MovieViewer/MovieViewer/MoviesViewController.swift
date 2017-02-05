@@ -38,7 +38,7 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
         
         searchBar.delegate = self
         searchBar.placeholder = "Search for a movie..."
-        searchBar.searchBarStyle = .minimal
+        searchBar.searchBarStyle = .prominent
         
         // Initialize a UIRefreshControl for pull-to-refresh
         let refreshControl = UIRefreshControl()
@@ -168,7 +168,8 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
     /*
     // MARK: - Search
     */
-    // Returns movies by searched movie title
+    
+    // Filters movies by searched movie title
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
         guard let movies = self.movies
@@ -176,21 +177,27 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
                 return
         }
         
+        // show cancel button with animation if text is input
+        self.searchBar.setShowsCancelButton(searchText != "", animated: true)
         
         // filter movies based on title
-//        print(searchText)
         filteredMovies = searchText.isEmpty ? movies : movies.filter ({ movie in
             
             // bool for whether or not the movie title matches searchText
             let foundTitle = (movie["title"] as? String)?.range(of: searchText, options: .caseInsensitive) != nil
-//            print(foundTitle)
             return foundTitle
         })
         
         self.collectionView.reloadData()
         
-//        print("\(filteredMovies)")
         
+    }
+    
+    // Handles pressing the cancel button
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchBar.showsCancelButton = false
+        searchBar.text = ""
+        searchBar.resignFirstResponder()
     }
     
     // MARK: - Collection View Data Source
@@ -241,19 +248,5 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
         return cell
 
     }
-    
-
-    
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
