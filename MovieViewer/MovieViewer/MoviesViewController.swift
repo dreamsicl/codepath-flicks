@@ -38,7 +38,7 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
         
         searchBar.delegate = self
         searchBar.placeholder = "Search for a movie..."
-//        searchBar.searchBarStyle
+        searchBar.searchBarStyle = .minimal
         
         // Initialize a UIRefreshControl for pull-to-refresh
         let refreshControl = UIRefreshControl()
