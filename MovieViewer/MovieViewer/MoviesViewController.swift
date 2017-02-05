@@ -198,6 +198,10 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
         searchBar.showsCancelButton = false
         searchBar.text = ""
         searchBar.resignFirstResponder()
+        
+        // make sure view displays all movies
+        filteredMovies = movies
+        self.collectionView.reloadData()
     }
     
     // MARK: - Collection View Data Source
