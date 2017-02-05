@@ -10,33 +10,38 @@ import UIKit
 import AFNetworking
 import MBProgressHUD
 
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
+class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableViewDelegate,*/ UISearchBarDelegate, UICollectionViewDataSource {
 
+    
+    @IBOutlet weak var collectionView: UICollectionView!
+    
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var searchBar: UISearchBar!
     
     var movies: [NSDictionary]?
+
     var filteredMovies: [NSDictionary]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Set tableView parameters to self
-        tableView.dataSource = self
-        tableView.delegate = self
+        /*tableView.dataSource = self
+        tableView.delegate = self*/
+        collectionView.dataSource = self
         
         
         // Initialize a UIRefreshControl for pull-to-refresh
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
-        tableView.insertSubview(refreshControl, at: 0)
+        collectionView.insertSubview(refreshControl, at: 0)
         
         // Call the API to have data on first load
         update()
         
         // Initialize search bar delegate
-        searchBar.delegate = self
+//        searchBar.delegate = self
     }
     
     // Makes a network request to get updated data
@@ -69,7 +74,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
                     print(dataDictionary)
                     
                     self.movies = (dataDictionary["results"] as! [NSDictionary])
-                    self.tableView.reloadData()
+                    self.collectionView.reloadData()
                     
                 }
             }
@@ -84,7 +89,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     */
     
     // Sets the number of rows in the table to be the number of movies returned from API call
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    /*func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         print("movies.count = \(movies?.count)")
         if let movies = movies {
             return movies.count
@@ -138,7 +143,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         })
         
         return cell
-    }
+    }*/
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -162,6 +167,69 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
             return foundTitle
         })
     }
+    
+    // MARK: - Collection View Data Source
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if let movies = movies {
+            return movies.count
+        }
+        else {
+            return 0
+        }
+    }
+    
+    
+    // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionPoster", for: indexPath) as! MovieCollectionViewCell
+
+        
+        let movie = movies![indexPath.row]
+//        let title = movie["title"] as! String
+//        let overview = movie["overview"] as! String
+//        
+        
+//        cell.titleLabel.text = title
+//        cell.overviewLabel.text = overview
+//
+        // image handling
+        let posterPath = movie["poster_path"] as! String
+        let baseUrl = "https://image.tmdb.org/t/p/w500/"
+        let imageUrl = NSURL(string: baseUrl + posterPath)
+        let imageRequest = NSURLRequest(url: imageUrl as! URL)
+        
+        
+        
+        cell.posterView.setImageWith(
+            imageRequest as URLRequest,
+            placeholderImage: nil,
+            success: { (imageRequest, imageResponse, image) -> Void in
+                
+                // imageResponse will be nil if the image is cached
+                if imageResponse != nil {
+                    print("Image was NOT cached, fade in image")
+                    cell.posterView.alpha = 0.0
+                    cell.posterView.image = image
+                    UIView.animate(withDuration: 0.3, animations: { () -> Void in
+                        cell.posterView.alpha = 1.0
+                    })
+                } else {
+                    print("Image was cached so just update the image")
+                    cell.posterView.image = image
+                }
+        },
+            failure: { (imageRequest, imageResponse, error) -> Void in
+                // do something for the failure condition
+                print("Image failed to load")
+        })
+        
+        return cell
+
+    }
+    
+
+    
+    
 
     /*
     // MARK: - Navigation

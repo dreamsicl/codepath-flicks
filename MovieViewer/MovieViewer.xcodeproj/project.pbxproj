@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6F42010E6ADDBA062086312B /* Pods_MovieViewer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DB2E945A0CC68445424E14EA /* Pods_MovieViewer.framework */; };
+		C56F0C4A1E46C51300A60BC3 /* MovieCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C56F0C491E46C51300A60BC3 /* MovieCollectionViewCell.swift */; };
 		C5845D7A1E43FB43005FD010 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C5845D791E43FB43005FD010 /* AppDelegate.swift */; };
 		C5845D7F1E43FB43005FD010 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C5845D7D1E43FB43005FD010 /* Main.storyboard */; };
 		C5845D811E43FB43005FD010 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C5845D801E43FB43005FD010 /* Assets.xcassets */; };
@@ -18,6 +19,7 @@
 
 /* Begin PBXFileReference section */
 		BE6CC2874C7EADF4B8CA0CD5 /* Pods-MovieViewer.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MovieViewer.release.xcconfig"; path = "Pods/Target Support Files/Pods-MovieViewer/Pods-MovieViewer.release.xcconfig"; sourceTree = "<group>"; };
+		C56F0C491E46C51300A60BC3 /* MovieCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MovieCollectionViewCell.swift; sourceTree = "<group>"; };
 		C5845D761E43FB43005FD010 /* MovieViewer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MovieViewer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5845D791E43FB43005FD010 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C5845D7E1E43FB43005FD010 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 		C5845D8F1E4424DC005FD010 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				C56F0C491E46C51300A60BC3 /* MovieCollectionViewCell.swift */,
 				C5845D901E442513005FD010 /* MovieCell.swift */,
 			);
 			name = Views;
@@ -233,6 +236,7 @@
 				C5845D7A1E43FB43005FD010 /* AppDelegate.swift in Sources */,
 				C5845D8E1E43FCBC005FD010 /* MoviesViewController.swift in Sources */,
 				C5845D911E442513005FD010 /* MovieCell.swift in Sources */,
+				C56F0C4A1E46C51300A60BC3 /* MovieCollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
