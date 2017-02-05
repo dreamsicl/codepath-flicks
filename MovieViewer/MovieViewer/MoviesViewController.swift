@@ -49,7 +49,7 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
         update(refreshing: false)
         
         // Initialize search bar delegate
-//        searchBar.delegate = self
+        searchBar.delegate = self
     }
     
     // Makes a network request to get updated data
@@ -197,15 +197,8 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionPoster", for: indexPath) as! MovieCollectionViewCell
 
-        
         let movie = movies![indexPath.row]
-//        let title = movie["title"] as! String
-//        let overview = movie["overview"] as! String
-//        
         
-//        cell.titleLabel.text = title
-//        cell.overviewLabel.text = overview
-//
         // image handling
         let posterPath = movie["poster_path"] as! String
         let baseUrl = "https://image.tmdb.org/t/p/w500/"
@@ -221,20 +214,20 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
                 
                 // imageResponse will be nil if the image is cached
                 if imageResponse != nil {
-                    print("Image was NOT cached, fade in image")
+                    //print("Image was NOT cached, fade in image")
                     cell.posterView.alpha = 0.0
                     cell.posterView.image = image
                     UIView.animate(withDuration: 0.3, animations: { () -> Void in
                         cell.posterView.alpha = 1.0
                     })
                 } else {
-                    print("Image was cached so just update the image")
+                    //print("Image was cached so just update the image")
                     cell.posterView.image = image
                 }
         },
             failure: { (imageRequest, imageResponse, error) -> Void in
                 // do something for the failure condition
-                print("Image failed to load")
+                //print("Image failed to load")
         })
         
         return cell
