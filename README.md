@@ -27,8 +27,8 @@ The following **additional** features are implemented:
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1. 
-2. 
+1. How to tap on a cell to pull up information (title, overview, genres, etc.) on the movie associated with the cell
+2. How to change the default view from movie-poster-only to a view with less emphasis on the visuals and displays the movie's title and overview as well.
 
 ## Video Walkthrough 
 
