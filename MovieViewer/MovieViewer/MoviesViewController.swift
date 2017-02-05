@@ -10,11 +10,14 @@ import UIKit
 import AFNetworking
 import MBProgressHUD
 
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
 
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var searchBar: UISearchBar!
+    
     var movies: [NSDictionary]?
+    var filteredMovies: [NSDictionary]?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,14 +25,27 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         // Set tableView parameters to self
         tableView.dataSource = self
         tableView.delegate = self
-
-        // Call the API to have data on first load
-        update()
+        
         
         // Initialize a UIRefreshControl for pull-to-refresh
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
         tableView.insertSubview(refreshControl, at: 0)
+        
+        // Call the API to have data on first load
+        update()
+        
+        // Initialize search bar delegate
+        searchBar.delegate = self
+    }
+    
+    // Makes a network request to get updated data
+    // Updates the tableView with the new data
+    // Hides the RefreshControl
+    func refreshControlAction(_ refreshControl: UIRefreshControl) {
+        update();
+        // Tell the refreshControl to stop spinning
+        refreshControl.endRefreshing()
     }
     
     // Makes call to API for movie data
@@ -62,14 +78,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         
     }
     
-    // Makes a network request to get updated data
-    // Updates the tableView with the new data
-    // Hides the RefreshControl
-    func refreshControlAction(_ refreshControl: UIRefreshControl) {
-        update();
-        // Tell the refreshControl to stop spinning
-        refreshControl.endRefreshing()
-    }
     
     /*
     // MARK: - Table View
@@ -77,6 +85,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     
     // Sets the number of rows in the table to be the number of movies returned from API call
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("movies.count = \(movies?.count)")
         if let movies = movies {
             return movies.count
         }
@@ -93,23 +102,65 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
         let title = movie["title"] as! String
         let overview = movie["overview"] as! String
         
-        let posterPath = movie["poster_path"] as! String
-        let baseUrl = "https://image.tmdb.org/t/p/w500/"
-        let imageUrl = NSURL(string: baseUrl + posterPath)
         
         cell.titleLabel.text = title
         cell.overviewLabel.text = overview
-        cell.posterView.setImageWith(imageUrl as! URL)
+        
+        // image handling
+        let posterPath = movie["poster_path"] as! String
+        let baseUrl = "https://image.tmdb.org/t/p/w500/"
+        let imageUrl = NSURL(string: baseUrl + posterPath)
+        let imageRequest = NSURLRequest(url: imageUrl as! URL)
         
         
         
-        print("row\(indexPath.row)")
+        cell.posterView.setImageWith(
+            imageRequest as URLRequest,
+            placeholderImage: nil,
+            success: { (imageRequest, imageResponse, image) -> Void in
+                
+                // imageResponse will be nil if the image is cached
+                if imageResponse != nil {
+                    print("Image was NOT cached, fade in image")
+                    cell.posterView.alpha = 0.0
+                    cell.posterView.image = image
+                    UIView.animate(withDuration: 0.3, animations: { () -> Void in
+                        cell.posterView.alpha = 1.0
+                    })
+                } else {
+                    print("Image was cached so just update the image")
+                    cell.posterView.image = image
+                }
+        },
+            failure: { (imageRequest, imageResponse, error) -> Void in
+                // do something for the failure condition
+                print("Image failed to load")
+        })
+        
         return cell
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    /*
+    // MARK: - Search
+    */
+    // Returns movies by searched movie title
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        
+        
+        // filter movies based on title
+        filteredMovies = searchText.isEmpty ? movies : movies?.filter ({ movie in
+            
+            // bool for whether or not the movie title matches searchText
+            let foundTitle = (movie["title"] as? String)?.range(of: searchText, options: .caseInsensitive) != nil
+            
+            return foundTitle
+        })
     }
 
     /*
