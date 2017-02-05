@@ -85,9 +85,10 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
             }
             if let data = data {
                 if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
-                    print(dataDictionary)
+//                    print(dataDictionary)
                     
                     self.movies = (dataDictionary["results"] as! [NSDictionary])
+                    self.filteredMovies = self.movies
                     self.collectionView.reloadData()
                     
                 }
@@ -170,34 +171,41 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
     // Returns movies by searched movie title
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
+        guard let movies = self.movies
+            else {
+                return
+        }
         
         
         // filter movies based on title
-        filteredMovies = searchText.isEmpty ? movies : movies?.filter ({ movie in
+//        print(searchText)
+        filteredMovies = searchText.isEmpty ? movies : movies.filter ({ movie in
             
             // bool for whether or not the movie title matches searchText
             let foundTitle = (movie["title"] as? String)?.range(of: searchText, options: .caseInsensitive) != nil
-            
+//            print(foundTitle)
             return foundTitle
         })
+        
+        self.collectionView.reloadData()
+        
+//        print("\(filteredMovies)")
+        
     }
     
     // MARK: - Collection View Data Source
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if let movies = movies {
-            return movies.count
-        }
-        else {
+        if let filteredMovies = self.filteredMovies {
+            return filteredMovies.count
+        } else {
             return 0
         }
     }
-    
-    
     // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionPoster", for: indexPath) as! MovieCollectionViewCell
 
-        let movie = movies![indexPath.row]
+        let movie = filteredMovies![indexPath.row]
         
         // image handling
         let posterPath = movie["poster_path"] as! String
