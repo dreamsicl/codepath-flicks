@@ -10,12 +10,11 @@ import UIKit
 import AFNetworking
 import MBProgressHUD
 
-class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableViewDelegate,*/ UISearchBarDelegate, UICollectionViewDataSource {
+class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableViewDelegate,*/ UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
 
+    @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
     @IBOutlet weak var collectionView: UICollectionView!
-    
-    @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var searchBar: UISearchBar!
     
@@ -30,7 +29,16 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
         /*tableView.dataSource = self
         tableView.delegate = self*/
         collectionView.dataSource = self
+        collectionView.delegate = self
         
+        flowLayout.scrollDirection = .vertical
+        flowLayout.minimumLineSpacing = 0
+        flowLayout.minimumInteritemSpacing = 0
+        flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 10)
+        
+        searchBar.delegate = self
+        searchBar.placeholder = "Search for a movie..."
+//        searchBar.searchBarStyle
         
         // Initialize a UIRefreshControl for pull-to-refresh
         let refreshControl = UIRefreshControl()
