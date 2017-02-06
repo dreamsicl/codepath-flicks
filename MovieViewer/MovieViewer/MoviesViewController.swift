@@ -16,7 +16,6 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-//    @IBOutlet weak var searchBar: UISearchBar!
     lazy var searchBar = UISearchBar();
     
     var movies: [NSDictionary]?
@@ -26,9 +25,7 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Set tableView parameters to self
-        /*tableView.dataSource = self
-        tableView.delegate = self*/
+        // Set collectionView parameters to self
         collectionView.dataSource = self
         collectionView.delegate = self
         
@@ -90,7 +87,7 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
             }
             if let data = data {
                 if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
-//                    print(dataDictionary)
+                    //print(dataDictionary)
                     
                     self.movies = (dataDictionary["results"] as! [NSDictionary])
                     self.filteredMovies = self.movies
@@ -103,67 +100,6 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
         
     }
     
-    
-    /*
-    // MARK: - Table View
-    */
-    
-    // Sets the number of rows in the table to be the number of movies returned from API call
-    /*func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("movies.count = \(movies?.count)")
-        if let movies = movies {
-            return movies.count
-        }
-        else {
-            return 0
-        }
-    }
-
-    // Populates table cell with individual movie data returned from API call
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MovieCell", for: indexPath) as! MovieCell
-        
-        let movie = movies![indexPath.row]
-        let title = movie["title"] as! String
-        let overview = movie["overview"] as! String
-        
-        
-        cell.titleLabel.text = title
-        cell.overviewLabel.text = overview
-        
-        // image handling
-        let posterPath = movie["poster_path"] as! String
-        let baseUrl = "https://image.tmdb.org/t/p/w500/"
-        let imageUrl = NSURL(string: baseUrl + posterPath)
-        let imageRequest = NSURLRequest(url: imageUrl as! URL)
-        
-        
-        
-        cell.posterView.setImageWith(
-            imageRequest as URLRequest,
-            placeholderImage: nil,
-            success: { (imageRequest, imageResponse, image) -> Void in
-                
-                // imageResponse will be nil if the image is cached
-                if imageResponse != nil {
-                    print("Image was NOT cached, fade in image")
-                    cell.posterView.alpha = 0.0
-                    cell.posterView.image = image
-                    UIView.animate(withDuration: 0.3, animations: { () -> Void in
-                        cell.posterView.alpha = 1.0
-                    })
-                } else {
-                    print("Image was cached so just update the image")
-                    cell.posterView.image = image
-                }
-        },
-            failure: { (imageRequest, imageResponse, error) -> Void in
-                // do something for the failure condition
-                print("Image failed to load")
-        })
-        
-        return cell
-    }*/
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
