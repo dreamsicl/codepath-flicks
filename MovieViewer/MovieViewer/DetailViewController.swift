@@ -27,6 +27,39 @@ class DetailViewController: UIViewController {
         let overview = movie["overview"] as? String
         overviewLabel.text = overview
         
+            // image handling
+        if let posterPath = movie["poster_path"] as? String {
+            
+            let baseUrl = "https://image.tmdb.org/t/p/w500/"
+            let imageUrl = NSURL(string: baseUrl + posterPath)
+            let imageRequest = NSURLRequest(url: imageUrl as! URL)
+            
+            
+            
+            posterimageView.setImageWith(
+                imageRequest as URLRequest,
+                placeholderImage: nil,
+                success: { (imageRequest, imageResponse, image) -> Void in
+                    
+                    // imageResponse will be nil if the image is cached
+                    if imageResponse != nil {
+                        //print("Image was NOT cached, fade in image")
+                        self.posterimageView.alpha = 0.0
+                        self.posterimageView.image = image
+                        UIView.animate(withDuration: 0.3, animations: { () -> Void in
+                            self.posterimageView.alpha = 1.0
+                        })
+                    } else {
+                        //print("Image was cached so just update the image")
+                        self.posterimageView.image = image
+                    }
+            },
+                failure: { (imageRequest, imageResponse, error) -> Void in
+                    // do something for the failure condition
+                    //print("Image failed to load")
+            })
+        }
+        
         print(movie)
     }
 
