@@ -84,14 +84,14 @@ The following **additional** features are implemented:
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1. 
-2. 
+1. On the Collection View Controller, how to sort movies by rating, title A-Z, etc.
+2. How to add filtering options/buttons (separate from search bar) for genre, 4 star and up ratings, etc. and the best way to design/display the filters without cluttering the screen.
 
 ## Video Walkthrough 
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://raw.githubusercontent.com/dreamsicl/codepath-flicks/master/movieviewer2.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
