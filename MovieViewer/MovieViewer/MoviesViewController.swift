@@ -230,7 +230,8 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
             let imageUrl = NSURL(string: baseUrl + posterPath)
             let imageRequest = NSURLRequest(url: imageUrl as! URL)
             
-            
+            cell.posterView.layer.cornerRadius = 5.0;
+            cell.posterView.clipsToBounds = true;
             
             cell.posterView.setImageWith(
                 imageRequest as URLRequest,
