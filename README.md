@@ -40,7 +40,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+The filter function to filter the movies array by searchText took some time to understand and implement. Migrating from TableView to CollectionView was a bit tedious.
 
 ## License
 
