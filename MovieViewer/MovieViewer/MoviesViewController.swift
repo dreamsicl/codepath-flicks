@@ -16,7 +16,8 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
     
     @IBOutlet weak var collectionView: UICollectionView!
     
-    @IBOutlet weak var searchBar: UISearchBar!
+//    @IBOutlet weak var searchBar: UISearchBar!
+    lazy var searchBar = UISearchBar();
     
     var movies: [NSDictionary]?
 
@@ -36,9 +37,13 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
         flowLayout.minimumInteritemSpacing = 0
         flowLayout.sectionInset = UIEdgeInsetsMake(0, 0, 0, 10)
         
+        searchBar.sizeToFit()
+        
         searchBar.delegate = self
         searchBar.placeholder = "Search for a movie..."
         searchBar.searchBarStyle = .prominent
+        
+        navigationItem.titleView = searchBar
         
         // Initialize a UIRefreshControl for pull-to-refresh
         let refreshControl = UIRefreshControl()
