@@ -22,6 +22,8 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
 
     var filteredMovies: [NSDictionary]?
     
+    var endpoint = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -70,7 +72,7 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
     // Reloads table data if request is successful
     func update(refreshing: Bool) {
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = URL(string: "https://api.themoviedb.org/3/movie/now_playing?api_key=\(apiKey)")!
+        let url = URL(string: "https://api.themoviedb.org/3/movie/\(endpoint)?api_key=\(apiKey)")!
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
@@ -162,29 +164,53 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
         // image handling
         if let posterPath = movie["poster_path"] as? String {
             
-            let baseUrl = "https://image.tmdb.org/t/p/w500/"
-            let imageUrl = NSURL(string: baseUrl + posterPath)
-            let imageRequest = NSURLRequest(url: imageUrl as! URL)
+            let smallImageUrl = NSURL(string: "https://image.tmdb.org/t/p/w185/" + posterPath)
+            let largeImageUrl = NSURL(string: "https://image.tmdb.org/t/p/w500/" + posterPath)
+            
+            let smallImageRequest = NSURLRequest(url: smallImageUrl as! URL)
+            let largeImageRequest = NSURLRequest(url: largeImageUrl as! URL)
             
             cell.posterView.layer.cornerRadius = 5.0;
             cell.posterView.clipsToBounds = true;
             
             cell.posterView.setImageWith(
-                imageRequest as URLRequest,
+                smallImageRequest as URLRequest,
                 placeholderImage: nil,
-                success: { (imageRequest, imageResponse, image) -> Void in
+                success: { (smallImageRequest, smallImageResponse, smallImage) -> Void in
                     
                     // imageResponse will be nil if the image is cached
-                    if imageResponse != nil {
+                    if smallImageResponse != nil {
                         //print("Image was NOT cached, fade in image")
                         cell.posterView.alpha = 0.0
-                        cell.posterView.image = image
+                        cell.posterView.image = smallImage
                         UIView.animate(withDuration: 0.3, animations: { () -> Void in
                             cell.posterView.alpha = 1.0
                         })
+                        
+                        UIView.animate(withDuration: 0.3, animations: { () -> Void in
+                            cell.posterView.alpha = 1.0
+                            
+                        }, completion: { (sucess) -> Void in
+                            
+                            // The AFNetworking ImageView Category only allows one request to be sent at a time
+                            // per ImageView. This code must be in the completion block.
+                            cell.posterView.setImageWith(
+                                largeImageRequest as URLRequest,
+                                placeholderImage: smallImage,
+                                success: { (largeImageRequest, largeImageResponse, largeImage) -> Void in
+                                    
+                                    cell.posterView.image = largeImage;
+                                    
+                            },
+                                failure: { (request, response, error) -> Void in
+                                    // do something for the failure condition of the large image request
+                                    // possibly setting the ImageView's image to a default image
+                            })
+                        })
+                        
                     } else {
                         //print("Image was cached so just update the image")
-                        cell.posterView.image = image
+                        cell.posterView.image = smallImage
                     }
             },
                 failure: { (imageRequest, imageResponse, error) -> Void in
@@ -192,6 +218,11 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
                     //print("Image failed to load")
             })
         }
+        
+        
+        cell.selectedBackgroundView = UIView()
+        cell.selectedBackgroundView?.backgroundColor = UIColor.magenta
+        
         
         return cell
 
