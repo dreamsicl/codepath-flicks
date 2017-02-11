@@ -1,8 +1,8 @@
 # Project 1 - *Flicks*
 
-**Flicks** is a movies app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#).
+**Flicks** is a movies app using the [The Movie Database API](http://docs.themoviedb.apiary.io/#). 
 
-Time spent: **6** hours spent in total
+Time spent: **7** hours spent in total
 
 ## User Stories
 
@@ -15,7 +15,7 @@ The following **required** functionality is complete:
 
 The following **optional** features are implemented:
 
-- [ ] User sees an error message when there's a networking error.
+- [X] User sees an error message when there's a networking error.
 - [X] Movies are displayed using a CollectionView instead of a TableView.
 - [X] User can search for a movie.
 - [X] All images fade in as they are loading.
@@ -41,6 +41,8 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 ## Notes
 
 The filter function to filter the movies array by searchText took some time to understand and implement. Migrating from TableView to CollectionView was a bit tedious.
+
+Icons from [FontAwesome](http://fontawesome.io).
 
 ## License
 
@@ -70,16 +72,16 @@ Time spent: **1.5** hours spent in total
 The following **required** functionality is completed:
 
 - [X] User can view movie details by tapping on a cell.
-- [ ] User can select from a tab bar for either **Now Playing** or **Top Rated** movies.
-- [ ] Customize the selection effect of the cell.
+- [X] User can select from a tab bar for either **Now Playing** or **Top Rated** movies.
+- [X] Customize the selection effect of the cell.
 
 The following **optional** features are implemented:
 
-- [ ] For the large poster, load the low resolution image first and then switch to the high resolution image when complete.
+- [X] For the large poster, load the low resolution image first and then switch to the high resolution image when complete.
 - [X] Customize the navigation bar. (moved search bar to navigation bar)
 
 The following **additional** features are implemented:
-
+s
 - [ ] List anything else that you can get done to improve the app functionality!
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
@@ -97,7 +99,9 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+
+
+Icons from [FontAwesome](http://fontawesome.io).
 
 ## License
 

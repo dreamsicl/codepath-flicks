@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "542CD793CDACE607B212EB70ABD54FB0"
-               BuildableName = "Pods_MovieViewer.framework"
-               BlueprintName = "Pods-MovieViewer"
+               BlueprintIdentifier = "C74D47B051BF84CA30E0723F127F42AD"
+               BuildableName = "FontAwesome_swift.framework"
+               BlueprintName = "FontAwesome.swift"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "542CD793CDACE607B212EB70ABD54FB0"
-            BuildableName = "Pods_MovieViewer.framework"
-            BlueprintName = "Pods-MovieViewer"
+            BlueprintIdentifier = "C74D47B051BF84CA30E0723F127F42AD"
+            BuildableName = "FontAwesome_swift.framework"
+            BlueprintName = "FontAwesome.swift"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

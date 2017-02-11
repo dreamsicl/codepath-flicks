@@ -49,12 +49,36 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
+                            <view contentMode="scaleToFill" misplaced="YES" id="xGQ-QY-HJE" userLabel="Error View">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ur3-h5-ofy" userLabel="Error Symbol Label">
+                                        <rect key="frame" x="0.0" y="197" width="320" height="64"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="63"/>
+                                        <color key="textColor" red="0.69760564469999997" green="0.57398598099999998" blue="1" alpha="0.81885453350000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bFl-DD-yhd" userLabel="Error Label">
+                                        <rect key="frame" x="0.0" y="241" width="320" height="84"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" red="0.69760564469999997" green="0.57398598099999998" blue="1" alpha="0.81885453345070425" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                        <size key="shadowOffset" width="1" height="-1"/>
+                                    </label>
+                                </subviews>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="gwp-Xe-Uyg"/>
                     <connections>
                         <outlet property="collectionView" destination="GIY-sB-XxP" id="6o8-jd-Duz"/>
+                        <outlet property="errorLabel" destination="bFl-DD-yhd" id="kZo-Sq-4EC"/>
+                        <outlet property="errorSymbolLabel" destination="ur3-h5-ofy" id="Fgl-km-zFO"/>
+                        <outlet property="errorView" destination="xGQ-QY-HJE" id="H7G-8N-jrp"/>
                         <outlet property="flowLayout" destination="eZ8-o2-NMS" id="FHK-fT-vQr"/>
                     </connections>
                 </viewController>
@@ -126,6 +150,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="RsK-MY-n9h">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="barTintColor" red="0.89841899889999999" green="1" blue="0.84927246270000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>

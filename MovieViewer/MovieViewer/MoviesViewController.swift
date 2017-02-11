@@ -9,12 +9,18 @@
 import UIKit
 import AFNetworking
 import MBProgressHUD
+import FontAwesome_swift
 
 class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableViewDelegate,*/ UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
 
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
     @IBOutlet weak var collectionView: UICollectionView!
+    
+    @IBOutlet weak var errorView: UIView!
+    
+    @IBOutlet weak var errorLabel: UILabel!
+    @IBOutlet weak var errorSymbolLabel: UILabel!
     
     lazy var searchBar = UISearchBar();
     
@@ -26,6 +32,11 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        errorView.isHidden = true
+        errorSymbolLabel.font = UIFont.fontAwesome(ofSize: 50)
+        errorSymbolLabel.text =  String.fontAwesomeIcon(code: "fa-exclamation-triangle")
+        
 
         // Set collectionView parameters to self
         collectionView.dataSource = self
@@ -85,8 +96,16 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
             
             if (!refreshing) {
                 MBProgressHUD.hide(for: self.view, animated: true)
-                
             }
+            
+            // error handling
+            if (error != nil) {
+                print("updateError: \(error)")
+                self.errorLabel.text = error?.localizedDescription
+                self.errorView.isHidden = false
+            }
+            
+            //
             if let data = data {
                 if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
                     //print(dataDictionary)
