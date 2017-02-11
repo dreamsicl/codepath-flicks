@@ -28,8 +28,15 @@
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
+                                <label key="backgroundView" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="UTB-WW-425" userLabel="Error Label">
+                                    <rect key="frame" x="0.0" y="-64" width="320" height="568"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" red="0.69760564469999997" green="0.57398598099999998" blue="1" alpha="0.81885453350000004" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" reuseIdentifier="collectionPoster" id="49g-7F-LlQ" customClass="MovieCollectionViewCell" customModule="MovieViewer" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" reuseIdentifier="MovieCell" id="49g-7F-LlQ" userLabel="Movie Cell" customClass="MovieCollectionViewCell" customModule="MovieViewer" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="153" height="235"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -49,36 +56,13 @@
                                     </collectionViewCell>
                                 </cells>
                             </collectionView>
-                            <view contentMode="scaleToFill" misplaced="YES" id="xGQ-QY-HJE" userLabel="Error View">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="bottom" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ur3-h5-ofy" userLabel="Error Symbol Label">
-                                        <rect key="frame" x="0.0" y="197" width="320" height="64"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" weight="heavy" pointSize="63"/>
-                                        <color key="textColor" red="0.69760564469999997" green="0.57398598099999998" blue="1" alpha="0.81885453350000004" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="center" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bFl-DD-yhd" userLabel="Error Label">
-                                        <rect key="frame" x="0.0" y="241" width="320" height="84"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.69760564469999997" green="0.57398598099999998" blue="1" alpha="0.81885453345070425" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <nil key="highlightedColor"/>
-                                        <size key="shadowOffset" width="1" height="-1"/>
-                                    </label>
-                                </subviews>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
                     <navigationItem key="navigationItem" id="gwp-Xe-Uyg"/>
                     <connections>
                         <outlet property="collectionView" destination="GIY-sB-XxP" id="6o8-jd-Duz"/>
-                        <outlet property="errorLabel" destination="bFl-DD-yhd" id="kZo-Sq-4EC"/>
-                        <outlet property="errorSymbolLabel" destination="ur3-h5-ofy" id="Fgl-km-zFO"/>
-                        <outlet property="errorView" destination="xGQ-QY-HJE" id="H7G-8N-jrp"/>
+                        <outlet property="errorLabel" destination="UTB-WW-425" id="Did-LD-S4R"/>
                         <outlet property="flowLayout" destination="eZ8-o2-NMS" id="FHK-fT-vQr"/>
                     </connections>
                 </viewController>

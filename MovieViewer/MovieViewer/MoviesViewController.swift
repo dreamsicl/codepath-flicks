@@ -16,12 +16,8 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
     @IBOutlet weak var collectionView: UICollectionView!
-    
-    @IBOutlet weak var errorView: UIView!
-    
+        
     @IBOutlet weak var errorLabel: UILabel!
-    @IBOutlet weak var errorSymbolLabel: UILabel!
-    
     lazy var searchBar = UISearchBar();
     
     var movies: [NSDictionary]?
@@ -33,9 +29,6 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        errorView.isHidden = true
-        errorSymbolLabel.font = UIFont.fontAwesome(ofSize: 50)
-        errorSymbolLabel.text =  String.fontAwesomeIcon(code: "fa-exclamation-triangle")
         
 
         // Set collectionView parameters to self
@@ -100,9 +93,20 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
             
             // error handling
             if (error != nil) {
-                print("updateError: \(error)")
-                self.errorLabel.text = error?.localizedDescription
-                self.errorView.isHidden = false
+                print("updateError: \(error?.localizedDescription)")
+                let errorMessage = String.fontAwesomeIcon(code: "fa-exclamation-triangle")! + "\n\n" + (error?.localizedDescription)!
+                
+                let attributedString = NSMutableAttributedString(string: errorMessage, attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 17)])
+                let symbolRange = NSMakeRange(0, 1)
+                attributedString.setAttributes([NSFontAttributeName: UIFont.fontAwesome(ofSize: 60)], range: symbolRange)
+                
+                print("\(attributedString)")
+                self.errorLabel.attributedText = attributedString
+                
+                self.collectionView.backgroundView = self.errorLabel
+                //self.errorView.isHidden = false
+            } else {
+                //self.errorView.isHidden = true
             }
             
             //
@@ -171,6 +175,7 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
         if let filteredMovies = self.filteredMovies {
             return filteredMovies.count
         } else {
+            
             return 0
         }
     }
