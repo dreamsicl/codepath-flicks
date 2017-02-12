@@ -36,7 +36,7 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" reuseIdentifier="MovieCell" id="49g-7F-LlQ" userLabel="Movie Cell" customClass="MovieCollectionViewCell" customModule="MovieViewer" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" misplaced="YES" reuseIdentifier="MovieCell" id="49g-7F-LlQ" userLabel="Movie Cell" customClass="MovieCollectionCell" customModule="MovieViewer" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="153" height="235"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -50,7 +50,7 @@
                                             </subviews>
                                         </view>
                                         <connections>
-                                            <outlet property="posterView" destination="FIo-7V-Cu9" id="Nuu-T6-nMr"/>
+                                            <outlet property="posterView" destination="FIo-7V-Cu9" id="Jpc-Rg-JoK"/>
                                             <segue destination="7Bb-oE-sD0" kind="push" id="epF-dH-LsG"/>
                                         </connections>
                                     </collectionViewCell>
@@ -134,6 +134,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="RsK-MY-n9h">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" red="0.69760564469999997" green="0.57398598099999998" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="barTintColor" red="0.89841899889999999" green="1" blue="0.84927246270000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </navigationBar>
                     <nil name="viewControllers"/>

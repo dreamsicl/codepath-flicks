@@ -11,25 +11,29 @@ import AFNetworking
 import MBProgressHUD
 import FontAwesome_swift
 
-class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableViewDelegate,*/ UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate {
+class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableViewDelegate,*/ UICollectionViewDataSource, UICollectionViewDelegate, UISearchBarDelegate, UIScrollViewDelegate {
 
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
     @IBOutlet weak var collectionView: UICollectionView!
         
     @IBOutlet weak var errorLabel: UILabel!
+    
     lazy var searchBar = UISearchBar();
     
     var movies: [NSDictionary]?
-
     var filteredMovies: [NSDictionary]?
-    
     var endpoint = ""
+
+    var page: Int = 1
+    var nextPage: Int = 2
+    var isMoreDataLoading = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        // hide errorLabel until needed
+        errorLabel.isHidden = true
 
         // Set collectionView parameters to self
         collectionView.dataSource = self
@@ -54,7 +58,7 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
         collectionView.insertSubview(refreshControl, at: 0)
         
         // Call the API to have data on first load
-        update(refreshing: false)
+        update(currentPage: 1)
         
         // Initialize search bar delegate
         searchBar.delegate = self
@@ -66,7 +70,7 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
     func refreshControlAction(_ refreshControl: UIRefreshControl) {
         // make sure progress HUD doesn't show during refresh
         MBProgressHUD.hide(for: self.view, animated: true)
-        update(refreshing: true);
+        update(currentPage: 1);
         // Tell the refreshControl to stop spinning
         refreshControl.endRefreshing()
     }
@@ -74,52 +78,74 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
     // Makes call to API for movie data
     // Sets loading state while data is being fetched
     // Reloads table data if request is successful
-    func update(refreshing: Bool) {
+    func update(currentPage: Int) {
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
-        let url = URL(string: "https://api.themoviedb.org/3/movie/\(endpoint)?api_key=\(apiKey)")!
+        
+        print("loading page \(currentPage) on endpoint \(endpoint)")
+        let url = URL(string: "https://api.themoviedb.org/3/movie/\(endpoint)?api_key=\(apiKey)&page=\(currentPage)")!
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
         
-        if (!refreshing) {
+        if (currentPage != 1) {
             MBProgressHUD.showAdded(to: self.view, animated: true)
         }
         
         let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
             
-            if (!refreshing) {
+            if (currentPage != 1) {
                 MBProgressHUD.hide(for: self.view, animated: true)
+                self.isMoreDataLoading = false
+                self.nextPage += 1
             }
             
             // error handling
             if (error != nil) {
-                print("updateError: \(error?.localizedDescription)")
+                
+                // set error message
+                
                 let errorMessage = String.fontAwesomeIcon(code: "fa-exclamation-triangle")! + "\n\n" + (error?.localizedDescription)!
                 
-                let attributedString = NSMutableAttributedString(string: errorMessage, attributes: [NSFontAttributeName : UIFont.systemFont(ofSize: 17)])
+                // format error for display
+                let attributedString = NSMutableAttributedString(string: errorMessage)
                 let symbolRange = NSMakeRange(0, 1)
                 attributedString.setAttributes([NSFontAttributeName: UIFont.fontAwesome(ofSize: 60)], range: symbolRange)
-                
-                print("\(attributedString)")
+
+                // set background of collectionView to error message
+                self.errorLabel.isHidden = false
                 self.errorLabel.attributedText = attributedString
-                
                 self.collectionView.backgroundView = self.errorLabel
-                //self.errorView.isHidden = false
+                
+                // empty data so that the error is viewable
+                self.movies = []
+                self.filteredMovies = []
+                self.collectionView.reloadData()
+                
+                
+                
             } else {
-                //self.errorView.isHidden = true
+                // successfully loaded data, so reload table
+                self.errorLabel.isHidden = true
+                if let data = data {
+                    if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
+                        //print(dataDictionary)
+                        
+                        if (currentPage != 1) {
+                            for result in (dataDictionary["results"] as! [NSDictionary]) {
+                                self.movies?.append(result)
+                            }
+                            self.filteredMovies = self.movies
+                        } else {
+                            self.movies = (dataDictionary["results"] as! [NSDictionary])
+                            self.filteredMovies = self.movies
+                        }
+                        self.collectionView.reloadData()
+                        
+                    }
+                }
             }
             
             //
-            if let data = data {
-                if let dataDictionary = try! JSONSerialization.jsonObject(with: data, options: []) as? NSDictionary {
-                    //print(dataDictionary)
-                    
-                    self.movies = (dataDictionary["results"] as! [NSDictionary])
-                    self.filteredMovies = self.movies
-                    self.collectionView.reloadData()
-                    
-                }
-            }
         }
         task.resume()
         
@@ -181,7 +207,7 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
     }
     // The cell that is returned must be retrieved from a call to -dequeueReusableCellWithReuseIdentifier:forIndexPath:
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionPoster", for: indexPath) as! MovieCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MovieCell", for: indexPath) as! MovieCollectionCell
 
         let movie = filteredMovies![indexPath.row]
         
@@ -266,5 +292,22 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
         detailViewController.movie = movie
         
         
+    }
+    
+    // MARK: - Infinite Scroll
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if (!isMoreDataLoading) {        // Calculate the position of one screen length before the bottom of the results
+            let scrollViewContentHeight = collectionView.contentSize.height
+            let scrollOffsetThreshold = scrollViewContentHeight - collectionView.bounds.size.height
+            
+            // When the user has scrolled past the threshold, start requesting
+            if(scrollView.contentOffset.y > scrollOffsetThreshold && collectionView.isDragging) {
+                isMoreDataLoading = true
+                self.page = self.nextPage
+                // load more results
+                update(currentPage: self.page)
+                
+            }
+        }
     }
 }
