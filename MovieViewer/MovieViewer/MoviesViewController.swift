@@ -220,7 +220,7 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
             let smallImageRequest = NSURLRequest(url: smallImageUrl as! URL)
             let largeImageRequest = NSURLRequest(url: largeImageUrl as! URL)
             
-            cell.posterView.layer.cornerRadius = 5.0;
+            cell.posterView.layer.cornerRadius = 2.0;
             cell.posterView.clipsToBounds = true;
             
             cell.posterView.setImageWith(
@@ -238,7 +238,7 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
                         })
                         
                         UIView.animate(withDuration: 0.3, animations: { () -> Void in
-                            cell.posterView.alpha = 1.0
+                            cell.posterView.alpha = 0.90
                             
                         }, completion: { (sucess) -> Void in
                             
@@ -269,13 +269,18 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
             })
         }
         
-        
-        cell.selectedBackgroundView = UIView()
-        cell.selectedBackgroundView?.backgroundColor = UIColor.magenta
-        
+        let cellBackground = UIView()
+        cellBackground.backgroundColor = navigationController?.navigationBar.barTintColor
+        cell.selectedBackgroundView = cellBackground
         
         return cell
 
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        // deselect the cell when we're done
+        collectionView.deselectItem(at: indexPath, animated: true)
     }
     
     // MARK: - Navigation

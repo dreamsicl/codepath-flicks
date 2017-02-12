@@ -14,7 +14,7 @@ class DetailViewController: UIViewController {
     
     @IBOutlet weak var titleLabel: UILabel!
     
-    @IBOutlet weak var overviewLabel: UILabel!
+    @IBOutlet weak var overviewTextView: UITextView!
     
     @IBOutlet weak var scrollView: UIScrollView!
     
@@ -27,14 +27,15 @@ class DetailViewController: UIViewController {
 
         scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: infoView.frame.origin.y + infoView.frame.size.height)
         
+        
         let title = movie["title"] as? String
         titleLabel.text = title
         navigationItem.title = title
         
         let overview = movie["overview"] as? String
-        overviewLabel.text = overview
+        overviewTextView.text = overview
         
-        overviewLabel.sizeToFit()
+        
         
             // image handling
         if let posterPath = movie["poster_path"] as? String {
@@ -78,7 +79,7 @@ class DetailViewController: UIViewController {
     }
     
 
-    
+    /*
     // MARK: - Navigation
 
     // In a storyboard-based application, you will often want to do a little preparation before navigation
@@ -88,6 +89,6 @@ class DetailViewController: UIViewController {
         // Get the new view controller using segue.destinationViewController.
         // Pass the selected object to the new view controller.
     }
-    
+    */
 
 }
