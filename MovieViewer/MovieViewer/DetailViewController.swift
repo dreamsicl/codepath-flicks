@@ -29,6 +29,7 @@ class DetailViewController: UIViewController {
         
         let title = movie["title"] as? String
         titleLabel.text = title
+        navigationItem.title = title
         
         let overview = movie["overview"] as? String
         overviewLabel.text = overview
