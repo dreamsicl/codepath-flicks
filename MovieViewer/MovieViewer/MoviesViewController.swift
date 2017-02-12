@@ -55,10 +55,11 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
         // Initialize a UIRefreshControl for pull-to-refresh
         let refreshControl = UIRefreshControl()
         refreshControl.addTarget(self, action: #selector(refreshControlAction(_:)), for: UIControlEvents.valueChanged)
-        collectionView.insertSubview(refreshControl, at: 0)
+        collectionView.refreshControl = refreshControl
+        collectionView.sendSubview(toBack: refreshControl)
         
         // Call the API to have data on first load
-        update(currentPage: 1)
+        update(currentPage: 1, refreshing: false)
         
         // Initialize search bar delegate
         searchBar.delegate = self
@@ -70,15 +71,15 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
     func refreshControlAction(_ refreshControl: UIRefreshControl) {
         // make sure progress HUD doesn't show during refresh
         MBProgressHUD.hide(for: self.view, animated: true)
-        update(currentPage: 1);
+        update(currentPage: 1, refreshing: true)
         // Tell the refreshControl to stop spinning
-        refreshControl.endRefreshing()
+        
     }
     
     // Makes call to API for movie data
     // Sets loading state while data is being fetched
     // Reloads table data if request is successful
-    func update(currentPage: Int) {
+    func update(currentPage: Int, refreshing: Bool) {
         let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"
         
         print("loading page \(currentPage) on endpoint \(endpoint)")
@@ -86,15 +87,17 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
         let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10)
         
         let session = URLSession(configuration: .default, delegate: nil, delegateQueue: OperationQueue.main)
-        
-        if (currentPage != 1) {
+//        print("\(refreshing)")
+        if (!refreshing) {
             MBProgressHUD.showAdded(to: self.view, animated: true)
         }
         
         let task: URLSessionDataTask = session.dataTask(with: request) { (data: Data?, response: URLResponse?, error: Error?) in
             
-            if (currentPage != 1) {
+            if (!refreshing) {
                 MBProgressHUD.hide(for: self.view, animated: true)
+            }
+            if (currentPage != 1) {
                 self.isMoreDataLoading = false
                 self.nextPage += 1
             }
@@ -120,6 +123,8 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
                 self.movies = []
                 self.filteredMovies = []
                 self.collectionView.reloadData()
+                self.page = 1
+                self.nextPage = 2
                 
                 
                 
@@ -141,9 +146,13 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
                         }
                         self.collectionView.reloadData()
                         
+                        if (refreshing) {
+                            self.collectionView.refreshControl?.endRefreshing()
+                        }
                     }
                 }
             }
+            
             
             //
         }
@@ -168,9 +177,6 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
             else {
                 return
         }
-        
-        // show cancel button with animation if text is input
-        self.searchBar.setShowsCancelButton(searchText != "", animated: true)
         
         // filter movies based on title
         filteredMovies = searchText.isEmpty ? movies : movies.filter ({ movie in
@@ -238,7 +244,7 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
                         })
                         
                         UIView.animate(withDuration: 0.3, animations: { () -> Void in
-                            cell.posterView.alpha = 0.90
+                            cell.posterView.alpha = 1.0
                             
                         }, completion: { (sucess) -> Void in
                             
@@ -310,7 +316,7 @@ class MoviesViewController: UIViewController,/* UITableViewDataSource, UITableVi
                 isMoreDataLoading = true
                 self.page = self.nextPage
                 // load more results
-                update(currentPage: self.page)
+                update(currentPage: self.page, refreshing: false)
                 
             }
         }

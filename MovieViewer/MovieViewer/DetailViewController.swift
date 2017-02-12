@@ -24,6 +24,8 @@ class DetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print("\(movie)")
 
         scrollView.contentSize = CGSize(width: scrollView.frame.size.width, height: infoView.frame.origin.y + infoView.frame.size.height)
         
@@ -70,7 +72,6 @@ class DetailViewController: UIViewController {
             })
         }
         
-        print(movie)
     }
 
     override func didReceiveMemoryWarning() {
