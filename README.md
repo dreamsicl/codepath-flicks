@@ -8,7 +8,7 @@ Time spent: **7** hours spent in total
 
 The following **required** functionality is complete:
 
-- [X] User can view a list of movies currently playing in theaters from The Movie Database.
+- [] User can view a list of movies currently playing in theaters from The Movie Database.
 - [X] Poster images are loaded using the UIImageView category in the AFNetworking library.
 - [X] User sees a loading state while waiting for the movies API.
 - [X] User can pull to refresh the movie list.
@@ -65,7 +65,7 @@ Icons from [FontAwesome](http://fontawesome.io).
 
 **Flicks** is a movies app displaying box office and top rental DVDs using [The Movie Database API](http://docs.themoviedb.apiary.io/#).
 
-Time spent: **1.5** hours spent in total
+Time spent: **3** hours spent in total
 
 ## User Stories
 
@@ -78,11 +78,13 @@ The following **required** functionality is completed:
 The following **optional** features are implemented:
 
 - [X] For the large poster, load the low resolution image first and then switch to the high resolution image when complete.
-- [X] Customize the navigation bar. (moved search bar to navigation bar)
+- [X] Customize the navigation bar. 
 
 The following **additional** features are implemented:
-s
-- [ ] List anything else that you can get done to improve the app functionality!
+
+- [X] Infinite scroll through Now Playing and Top Rated movies.
+- [X] TextView (scrollable area) for movie descriptions in Detail View.
+- [X] Customize the tab bar.
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
