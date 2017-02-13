@@ -8,7 +8,7 @@ Time spent: **7** hours spent in total
 
 The following **required** functionality is complete:
 
-- [] User can view a list of movies currently playing in theaters from The Movie Database.
+- [ ] User can view a list of movies currently playing in theaters from The Movie Database.
 - [X] Poster images are loaded using the UIImageView category in the AFNetworking library.
 - [X] User sees a loading state while waiting for the movies API.
 - [X] User can pull to refresh the movie list.
@@ -101,7 +101,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-
+I attempted to handle the Network Error optional feature from week 1, but was unsuccesful in making it work smoothly. An error message will display if an error occurs while fetching data from the API, but the UIRefreshControl will not work. 
 
 Icons from [FontAwesome](http://fontawesome.io).
 
